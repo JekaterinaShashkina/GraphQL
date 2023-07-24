@@ -1,5 +1,5 @@
 import { fetchRequest } from './modules/fetchRequest.js';
-import { showProgress, showUserData } from './modules/showData.js';
+import { getLevel, showProgress, showUserData } from './modules/showData.js';
 
 const form = document.querySelector('.signin__form');
 const submitBtn = document.querySelector('.form__submit');
@@ -45,6 +45,7 @@ const getUser = () => {
 if (jwtToken) {
   showUserData();
   showProgress();
+  getLevel();
 } else {
   getUser();
 }

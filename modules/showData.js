@@ -1,3 +1,5 @@
+import { addUser } from './addUser.js';
+
 const url = 'https://01.kood.tech/api/graphql-engine/v1/graphql';
 const jwtToken = localStorage.getItem('JWT token');
 const body = document.querySelector('.container');
@@ -42,35 +44,38 @@ export const showUserData = () => {
     .catch((error) => console.error('Error:', error.message));
 };
 
-const addUser = (data) => {
-  const { firstName, lastName, login, auditRatio } = data;
-  console.log(firstName, lastName, login);
-  const user = document.createElement('div');
-  user.classList.add('user');
-  const first = document.createElement('p');
-  first.classList.add('username');
-  first.textContent = `You firstname is ${firstName}`;
-  const last = document.createElement('p');
-  last.classList.add('username');
-  last.textContent = `You lastname is ${lastName}`;
-  const log = document.createElement('p');
-  log.classList.add('username');
-  log.textContent = `You login is ${login}`;
-  const audit = document.createElement('p');
-  audit.classList.add('username');
-  audit.textContent = `You audit rating is ${Math.round(auditRatio * 10) / 10}`;
-  user.append(first, last, log, audit);
-  body.textContent = '';
-  body.append(user);
-};
-export const getTransactions = () => {
-  const query = `query Transaction($where: {"type": {"_in": ["up", "down", "xp"] }}) {
-        transaction(where:$where) {
-        amount
-      type
-      createdAt
-    }
-    }`;
+export const getLevel = async () => {
+  const query = `  query{
+        user {
+            id
+            }
+        transaction (
+            where: { type:{_eq: "level"}, object: {type: {_nregex: "exercise|raid"}}}
+            limit: 1
+            offset: 0
+            order_by: {amount: desc}
+            ) {
+            amount
+        }
+        }`;
+  const response = await fetch(
+    'https://01.kood.tech/api/graphql-engine/v1/graphql',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query }),
+    },
+  );
+
+  const data = await response.json();
+  const lvl = document.createElement('div');
+  lvl.classList.add('lvl');
+  lvl.textContent = data.data.transaction[0].amount;
+  body.append(lvl);
+  console.log(data.data.transaction[0].amount);
 };
 
 export const showProgress = async () => {
@@ -102,19 +107,21 @@ export const showProgress = async () => {
       body: JSON.stringify({ query }),
     },
   );
-  const data = response.json();
-  data.then((data) => {
-    const grade = data.data.progress.map((project) => project.grade);
-    const sum = grade.reduce((acc, next) => acc + next, 0);
-    const avg = (sum / grade.length).toFixed(2);
-    console.log(data.data.progress[0].object.name);
-    let sumxp = 0;
-    const projects = data.data.progress.map((project) => {
-      return showXPSum(project.object.name);
-    });
-    const results = Promise.all(projects.then());
-    console.log(results);
+  const data = await response.json();
+  const grade = data.data.progress.map((project) => project.grade);
+  const sum = grade.reduce((acc, next) => acc + next, 0);
+  const avg = (sum / grade.length).toFixed(2);
+  console.log(data.data.progress[0].object.name);
+  const projects = data.data.progress.map((project) => {
+    return showXPSum(project.object.name);
   });
+  const res = await Promise.all(projects);
+  const totalXP = res.reduce((acc, xp) => acc + xp, 0);
+  const xp = document.createElement('div');
+  xp.classList.add('xp');
+  xp.textContent = `${Math.round(totalXP / 1000)}KB`;
+  body.append(xp);
+  console.log(Math.round(totalXP / 1000));
 };
 
 const showXPSum = async (projectName) => {
@@ -146,12 +153,10 @@ const showXPSum = async (projectName) => {
     },
     body: JSON.stringify({ query }),
   });
-  const data = response.json();
-  data.then((data) => {
-    if (data.data.transaction[0]) {
-      console.log(data.data.transaction[0].amount);
-
-      return data.data.transaction[0].amount;
-    }
-  });
+  const data = await response.json();
+  if (data.data.transaction[0]) {
+    return data.data.transaction[0].amount;
+  } else {
+    return 0;
+  }
 };
