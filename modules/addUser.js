@@ -1,21 +1,21 @@
-export const addUser = (data) => {
-  const { firstName, lastName, login, auditRatio } = data;
-  console.log(firstName, lastName, login);
+export const addUser = (data, body) => {
+  const { firstName, lastName, login, auditRatio, attrs } = data;
+  console.log(firstName, lastName, login, attrs.image);
   const user = document.createElement('div');
   user.classList.add('user');
-  const first = document.createElement('p');
-  first.classList.add('username');
-  first.textContent = `You firstname is ${firstName}`;
-  const last = document.createElement('p');
-  last.classList.add('username');
-  last.textContent = `You lastname is ${lastName}`;
+  const name = document.createElement('p');
+  name.classList.add('username');
+  name.textContent = `Welcome ${firstName} ${lastName}`;
   const log = document.createElement('p');
   log.classList.add('username');
-  log.textContent = `You login is ${login}`;
+  log.textContent = `Nickname: ${login}`;
   const audit = document.createElement('p');
   audit.classList.add('username');
-  audit.textContent = `You audit rating is ${Math.round(auditRatio * 10) / 10}`;
-  user.append(first, last, log, audit);
+  audit.textContent = `Audit rating is ${Math.round(auditRatio * 10) / 10}`;
+  const img = new Image();
+  img.classList.add('avatar');
+  img.src = `${attrs.image}`;
+  user.append(name, log, audit, img);
   body.textContent = '';
   body.append(user);
 };

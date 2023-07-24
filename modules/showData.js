@@ -12,6 +12,7 @@ export const showUserData = () => {
         firstName
         lastName
         auditRatio
+        attrs
         xps {
             amount
             path
@@ -34,9 +35,16 @@ export const showUserData = () => {
     .then((data) => {
       console.log('GraphQL Response:', data);
       if (data && data.data && data.data.user) {
-        const { firstName, lastName, login, auditRatio } = data.data.user[0];
-        console.log('User Data:', { firstName, lastName, login, auditRatio });
-        addUser(data.data.user[0]);
+        const { firstName, lastName, login, auditRatio, attr } =
+          data.data.user[0];
+        console.log('User Data:', {
+          firstName,
+          lastName,
+          login,
+          auditRatio,
+          attr,
+        });
+        addUser(data.data.user[0], body);
       } else {
         console.error('User data is missing or undefined in the API response.');
       }
@@ -73,7 +81,7 @@ export const getLevel = async () => {
   const data = await response.json();
   const lvl = document.createElement('div');
   lvl.classList.add('lvl');
-  lvl.textContent = data.data.transaction[0].amount;
+  lvl.textContent = `Current level ${data.data.transaction[0].amount}`;
   body.append(lvl);
   console.log(data.data.transaction[0].amount);
 };
@@ -111,15 +119,16 @@ export const showProgress = async () => {
   const grade = data.data.progress.map((project) => project.grade);
   const sum = grade.reduce((acc, next) => acc + next, 0);
   const avg = (sum / grade.length).toFixed(2);
-  console.log(data.data.progress[0].object.name);
+  console.log(data.data.progress);
   const projects = data.data.progress.map((project) => {
     return showXPSum(project.object.name);
   });
   const res = await Promise.all(projects);
+  console.log(res);
   const totalXP = res.reduce((acc, xp) => acc + xp, 0);
   const xp = document.createElement('div');
   xp.classList.add('xp');
-  xp.textContent = `${Math.round(totalXP / 1000)}KB`;
+  xp.textContent = `Total XP ${Math.round(totalXP / 1000)}KB`;
   body.append(xp);
   console.log(Math.round(totalXP / 1000));
 };
