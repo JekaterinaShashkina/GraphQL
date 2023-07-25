@@ -1,10 +1,12 @@
 import { addUser } from './addUser.js';
+import { showAuditGraphic, showProgressGraphic } from './graphics.js';
 
 const url = 'https://01.kood.tech/api/graphql-engine/v1/graphql';
 const jwtToken = localStorage.getItem('JWT token');
 const body = document.querySelector('.container');
 
 export const showUserData = () => {
+  // body.innerHTML = '';
   const query = `query User {
         user {
         id
@@ -35,16 +37,8 @@ export const showUserData = () => {
     .then((data) => {
       console.log('GraphQL Response:', data);
       if (data && data.data && data.data.user) {
-        const { firstName, lastName, login, auditRatio, attr } =
-          data.data.user[0];
-        console.log('User Data:', {
-          firstName,
-          lastName,
-          login,
-          auditRatio,
-          attr,
-        });
         addUser(data.data.user[0], body);
+        showAuditGraphic(data.data.user[0], body);
       } else {
         console.error('User data is missing or undefined in the API response.');
       }
@@ -119,17 +113,18 @@ export const showProgress = async () => {
   const grade = data.data.progress.map((project) => project.grade);
   const sum = grade.reduce((acc, next) => acc + next, 0);
   const avg = (sum / grade.length).toFixed(2);
-  console.log(data.data.progress);
+  // console.log(data.data.progress);
   const projects = data.data.progress.map((project) => {
     return showXPSum(project.object.name);
   });
   const res = await Promise.all(projects);
-  console.log(res);
+  // console.log(res);
   const totalXP = res.reduce((acc, xp) => acc + xp, 0);
   const xp = document.createElement('div');
   xp.classList.add('xp');
   xp.textContent = `Total XP ${Math.round(totalXP / 1000)}KB`;
   body.append(xp);
+  showProgressGraphic(data.data.progress, res, totalXP, body);
   console.log(Math.round(totalXP / 1000));
 };
 

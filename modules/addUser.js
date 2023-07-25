@@ -1,5 +1,5 @@
 export const addUser = (data, body) => {
-  const { firstName, lastName, login, auditRatio, attrs } = data;
+  const { firstName, lastName, login, attrs } = data;
   console.log(firstName, lastName, login, attrs.image);
   const user = document.createElement('div');
   user.classList.add('user');
@@ -9,13 +9,16 @@ export const addUser = (data, body) => {
   const log = document.createElement('p');
   log.classList.add('username');
   log.textContent = `Nickname: ${login}`;
-  const audit = document.createElement('p');
-  audit.classList.add('username');
-  audit.textContent = `Audit rating is ${Math.round(auditRatio * 10) / 10}`;
+  const mail = document.createElement('p');
+  mail.classList.add('username');
+  mail.textContent = `Friends can write you to ${attrs.email}`;
   const img = new Image();
   img.classList.add('avatar');
   img.src = `${attrs.image}`;
-  user.append(name, log, audit, img);
+  const logoutBtn = document.createElement('button');
+  logoutBtn.classList.add('logout');
+  logoutBtn.textContent = 'Log out';
+  user.append(name, log, mail, img, logoutBtn);
   body.textContent = '';
   body.append(user);
 };
