@@ -11,6 +11,7 @@ export const showUserData = () => {
         user {
         id
         login
+        createdAt
         firstName
         lastName
         auditRatio
@@ -110,22 +111,28 @@ export const showProgress = async () => {
     },
   );
   const data = await response.json();
-  const grade = data.data.progress.map((project) => project.grade);
-  const sum = grade.reduce((acc, next) => acc + next, 0);
-  const avg = (sum / grade.length).toFixed(2);
-  // console.log(data.data.progress);
+  // const grade = data.data.progress.map((project) => project.grade);
+  // const sum = grade.reduce((acc, next) => acc + next, 0);
+  // console.log(sum);
+  // console.log(data.data.progress[data.data.progress.length - 1].object.name);
   const projects = data.data.progress.map((project) => {
     return showXPSum(project.object.name);
   });
+  const lastProject =
+    data.data.progress[data.data.progress.length - 1].object.name;
+  const lp = document.createElement('div');
+  lp.classList.add('last');
+  lp.textContent = `Your last project: ${
+    lastProject.charAt(0).toUpperCase() + lastProject.slice(1)
+  }`;
   const res = await Promise.all(projects);
-  // console.log(res);
   const totalXP = res.reduce((acc, xp) => acc + xp, 0);
   const xp = document.createElement('div');
   xp.classList.add('xp');
   xp.textContent = `Total XP ${Math.round(totalXP / 1000)}KB`;
-  body.append(xp);
+  body.append(xp, lp);
   showProgressGraphic(data.data.progress, res, totalXP, body);
-  console.log(Math.round(totalXP / 1000));
+  // console.log(Math.round(totalXP / 1000));
 };
 
 const showXPSum = async (projectName) => {
