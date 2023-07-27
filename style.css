@@ -4,18 +4,34 @@ h1 {
   margin: 30px 10px;
   font-size: 35px;
   font-weight: 700;
+  color: #414;
+}
+h2 {
+  color: #828;
+  font-size: 28px;
+}
+.error {
+  font-size: 18px;
+  color: crimson;
 }
 .signin__form {
+  width: 800px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 30px;
+  border: 1px solid;
+  padding: 30px 15px;
+  background: url('fav/background.jpeg');
 }
 .form__label {
   display: block;
+  width: 300px;
   position: relative;
   margin-bottom: 20px;
+  color: #828;
+  font-size: 18px;
 }
 .form__input {
   margin-top: 15px;
@@ -24,8 +40,12 @@ h1 {
   line-height: 130%;
   letter-spacing: 0.04em;
   padding: 5px 15px;
-  border: 1px solid black;
+  border: 1px solid #414;
   border-radius: 12px;
+  color: #b4b;
+}
+::-webkit-input-placeholder {
+  color: #ebe;
 }
 .form__label-text {
   position: absolute;
@@ -38,14 +58,87 @@ h1 {
   margin-bottom: 60px;
 }
 .form__submit {
-  padding: 12px 30px;
-  background-color: rgb(78, 15, 15);
+  padding: 12px 90px;
+  background-color: #414;
   color: azure;
   border-radius: 8px;
   font-weight: 700;
   font-size: 18px;
   line-height: 130%;
   letter-spacing: 0.04em;
-  align-self: flex-start;
+  align-self: center;
   border: none;
+}
+.user {
+  display: grid;
+  grid-template-areas:
+    'title title'
+    'avatar wrapper'
+    'avatar logout';
+  gap: 30px;
+  margin-bottom: 30px;
+}
+.user__title {
+  grid-area: title;
+  margin: 10px auto;
+}
+.user__avatar {
+  grid-area: avatar;
+  background-color: #ebe;
+  border: 1px solid #828;
+  box-shadow: 5px 5px 5px #ebe;
+  box-shadow: 5px 5px 5px rgb(244, 229, 244);
+}
+.user__wrapper {
+  grid-area: wrapper;
+}
+.logout {
+  grid-area: logout;
+  padding: 12px 50px;
+  background-color: #414;
+  color: azure;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 130%;
+  letter-spacing: 0.04em;
+  align-self: center;
+  border: none;
+}
+.username {
+  max-width: 350px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #828;
+}
+.audit__title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.audit__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  margin-bottom: 30px;
+}
+.audit__rate {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  font-size: 18px;
+  color: #828;
+}
+.opt__data {
+  display: flex;
+  gap: 40px;
+  font-size: 22px;
+  color: #828;
+  margin-bottom: 30px;
+}
+.xp__graph {
+  margin-bottom: 30px;
+}
+.xp__title {
+  text-align: center;
+  margin-bottom: 30px;
 }

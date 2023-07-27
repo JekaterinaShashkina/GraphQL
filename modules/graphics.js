@@ -3,49 +3,55 @@ export const showAuditGraphic = (data, body) => {
   console.log(data);
   console.log(auditRatio, attrs, totalUp, totalDown);
   const chart = document.createElement('div');
-  const audit = document.createElement('p');
-  audit.classList.add('username');
+  const audit = document.createElement('h2');
+  audit.classList.add('audit__title');
   audit.textContent = `Audit rating is ${Math.round(auditRatio * 100) / 100}`;
-  const auditDown = document.createElement('div');
+  const auditWrapper = document.createElement('div');
+  auditWrapper.classList.add('audit__wrapper');
+  const auditRate = document.createElement('div');
+  auditRate.classList.add('audit__rate');
+  const auditDown = document.createElement('p');
   auditDown.textContent = `Done ${totalUp}`;
-  const auditUp = document.createElement('div');
+  const auditUp = document.createElement('p');
   auditUp.textContent = `Received ${totalDown}`;
+  auditRate.append(auditDown, auditUp);
   const auditGraphic = document.createElement('div');
   auditGraphic.width = 500;
   auditGraphic.classList.add('audit__graphic');
   if (auditRatio >= 1) {
     auditGraphic.innerHTML = `
-    <svg width="${500 - 80}" height="110">
-                  <rect x="5" y="5" width="${500 - 90}" height="35"
-                      fill="#FF743C" stroke="rgb(230, 230, 230)" stroke-width="10"/>
+    <svg width="700" height="110">
+                  <rect x="5" y="5" width="690" height="35"
+                      fill="#502" stroke="rgb(244, 229, 244)" stroke-width="10"/>
                   
                       <rect x="5" y="65" width="${
-                        (totalDown / totalUp) * (500 - 90)
+                        (totalDown / totalUp) * 690
                       }" height="35"
-                      fill="#2D3652" stroke="rgb(230, 230, 230)" stroke-width="10"/>
+                      fill="#D8A" stroke="rgb(244, 229, 244)" stroke-width="10"/>
               </svg>
     `;
   } else {
     auditGraphic.innerHTML = `
-    <svg width="${500 - 80}" height="110">
+    <svg width="700" height="110">
                   <rect x="5" y="5" width="${
-                    (totalUp / totalDown) * (500 - 90)
+                    (totalUp / totalDown) * 690
                   }" height="35"
-                      fill="#FF743C" stroke="rgb(230, 230, 230)" stroke-width="10"/>
+                      fill="#502" stroke="rgb(244, 229, 244)" stroke-width="10"/>
                   
-                      <rect x="5" y="65" width="${500 - 90}" height="35"
-                      fill="#2D3652" stroke="rgb(230, 230, 230)" stroke-width="10"/>
+                      <rect x="5" y="65" width="690" height="35"
+                      fill="#D8A" stroke="rgb(244, 229, 244)" stroke-width="10"/>
               </svg>
     `;
   }
-
-  chart.append(audit, auditDown, auditUp, auditGraphic);
+  auditWrapper.append(auditRate, auditGraphic);
+  chart.append(audit, auditWrapper);
   body.append(chart);
 };
 
 export const showProgressGraphic = (data, result, total, body) => {
-  console.log(data, result, total);
-  const windowWidth = document.documentElement.clientWidth;
+  const container = document.querySelector('.container');
+  console.log(container.offsetWidth);
+  const windowWidth = container.offsetWidth;
 
   const xpGraph = document.createElement('div');
   xpGraph.classList.add('xp__graph');
@@ -62,7 +68,7 @@ export const showProgressGraphic = (data, result, total, body) => {
     <text 
     x="43" y="${
       288 - 85.32 * i
-    }" fill="#2D3652" font-family="Arial" font-size="12px" text-anchor="end">
+    }" fill="#2D3652" font-family="Montserrat" font-size="12px" text-anchor="end">
         <tspan alignment-baseline="middle">${(
           (total / 3) *
           i
@@ -85,7 +91,7 @@ export const showProgressGraphic = (data, result, total, body) => {
     let xAxis = `
     <text 
     x="${70 + i * ((windowWidth * 0.9) / data.length)}" 
-    y="308" fill="#2D3652" font-family="Arial" font-size="12px" text-anchor="middle">
+    y="308" fill="#2D3652" font-family="Montserrat" font-size="12px" text-anchor="middle">
     ${date}</text>`;
     xAxisHtml.push(xAxis);
   });
@@ -110,14 +116,14 @@ export const showProgressGraphic = (data, result, total, body) => {
     let c = `<circle 
       cx="${x}" 
       cy="${y}" 
-      r="4" fill="#FF743C" stroke="#FF743C" stroke-width="2" tooltip="NY Knicks, 1 (100.0%)"></circle>`;
+      r="4" fill="#414" stroke="#828" stroke-width="2" tooltip="NY Knicks, 1 (100.0%)"></circle>`;
     circles.push(c);
   }
-  path += `" fill="none" fill-opacity="1" stroke="#FF743C" stroke-width="2" style="stroke-dasharray: 3000,3000"></path>`;
+  path += `" fill="none" fill-opacity="1" stroke="#828" stroke-width="2" style="stroke-dasharray: 3000,3000"></path>`;
   circles.push(path);
   graphSvg.innerHTML = `
   <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" 
-  width="100%" height="320">
+  width="${windowWidth}" height="340">
   <defs>
       <clippath id="zinoui-1">
           <rect x="53" y="32" width="700" height="400" fill="none"></rect>
@@ -126,7 +132,7 @@ export const showProgressGraphic = (data, result, total, body) => {
   <g class="chart-labels-y">${xAxisHtml}</g>
   <g class="chart-labels-x">${yAxisHtml} </g>
   <g class="zui-chart-axis">
-      <polyline points="53,32 53,288 3000,288" fill="none" shape-rendering="crispEdges" stroke="#2D3652" stroke-width="1"></polyline>
+      <polyline points="53,32 53,288 3000,288" fill="none" shape-rendering="crispEdges" stroke="#828" stroke-width="1"></polyline>
   </g>
   <g class="zui-chart-canvas">${circles}</g>
 </svg>

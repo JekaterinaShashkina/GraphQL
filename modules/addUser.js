@@ -10,8 +10,10 @@ export const addUser = (data, body) => {
   const user = document.createElement('div');
   user.classList.add('user');
   const name = document.createElement('h2');
-  name.classList.add('username');
+  name.classList.add('user__title');
   name.textContent = `Welcome ${firstName} ${lastName}`;
+  const userWrapper = document.createElement('div');
+  userWrapper.classList.add('user__wrapper');
   const log = document.createElement('p');
   log.classList.add('username');
   log.textContent = `Login: ${login}`;
@@ -20,9 +22,11 @@ export const addUser = (data, body) => {
   joined.textContent = `Joined on ${date}`;
   const mail = document.createElement('p');
   mail.classList.add('username');
-  mail.textContent = `Friends can write you to ${attrs.email}`;
+  mail.innerHTML = `
+  <span>Friends can write you to </span><a href=mailto:${attrs.email}>${attrs.email}</a> `;
+  userWrapper.append(log, joined, mail);
   const img = new Image();
-  img.classList.add('avatar');
+  img.classList.add('user__avatar');
   img.src = `${attrs.image}`;
   const logoutBtn = document.createElement('button');
   logoutBtn.classList.add('logout');
@@ -33,7 +37,7 @@ export const addUser = (data, body) => {
     localStorage.removeItem('JWT token');
     location.reload();
   });
-  user.append(name, log, joined, mail, img, logoutBtn);
+  user.append(name, img, userWrapper, logoutBtn);
   body.textContent = '';
   body.append(user);
 };

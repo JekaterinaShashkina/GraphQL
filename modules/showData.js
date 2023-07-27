@@ -5,6 +5,9 @@ const url = 'https://01.kood.tech/api/graphql-engine/v1/graphql';
 const jwtToken = localStorage.getItem('JWT token');
 const body = document.querySelector('.container');
 
+const optData = document.createElement('div');
+optData.classList.add('opt__data');
+
 export const showUserData = () => {
   // body.innerHTML = '';
   const query = `query User {
@@ -76,8 +79,8 @@ export const getLevel = async () => {
   const data = await response.json();
   const lvl = document.createElement('div');
   lvl.classList.add('lvl');
-  lvl.textContent = `Current level ${data.data.transaction[0].amount}`;
-  body.append(lvl);
+  lvl.textContent = `Current level: ${data.data.transaction[0].amount}`;
+  optData.append(lvl);
   console.log(data.data.transaction[0].amount);
 };
 
@@ -129,8 +132,9 @@ export const showProgress = async () => {
   const totalXP = res.reduce((acc, xp) => acc + xp, 0);
   const xp = document.createElement('div');
   xp.classList.add('xp');
-  xp.textContent = `Total XP ${Math.round(totalXP / 1000)}KB`;
-  body.append(xp, lp);
+  xp.textContent = `Total XP: ${Math.round(totalXP / 1000)}KB`;
+  optData.append(xp, lp);
+  body.append(optData);
   showProgressGraphic(data.data.progress, res, totalXP, body);
   // console.log(Math.round(totalXP / 1000));
 };

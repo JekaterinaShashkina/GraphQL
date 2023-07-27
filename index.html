@@ -5,12 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GraphQL</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="fav/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="fav/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="fav/favicon-16x16.png"
+    />
     <link rel="stylesheet" href="style.css" />
     <script src="index.js" type="module"></script>
   </head>
   <body>
     <div class="container">
       <h1>Welcome to GraphQL. Control your data from Kood/Johvi school</h1>
+      <div class="error"></div>
       <form action="" class="signin__form">
         <h2>Please log in</h2>
         <label for="name" class="form__label"
@@ -20,6 +38,7 @@
             type="text"
             name="name"
             placeholder="Enter your name"
+            required
           />
         </label>
         <label class="form__label" for="password"
@@ -28,7 +47,8 @@
             class="form__input password"
             type="password"
             name="password"
-            placeholder="enter your password"
+            placeholder="Enter your password"
+            required
           />
         </label>
         <button class="form__submit" type="submit">Log in</button>
