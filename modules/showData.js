@@ -9,7 +9,6 @@ const optData = document.createElement('div');
 optData.classList.add('opt__data');
 
 export const showUserData = () => {
-  // body.innerHTML = '';
   const query = `query User {
         user {
         id
@@ -81,7 +80,6 @@ export const getLevel = async () => {
   lvl.classList.add('lvl');
   lvl.textContent = `Current level: ${data.data.transaction[0].amount}`;
   optData.append(lvl);
-  console.log(data.data.transaction[0].amount);
 };
 
 export const showProgress = async () => {
@@ -114,10 +112,6 @@ export const showProgress = async () => {
     },
   );
   const data = await response.json();
-  // const grade = data.data.progress.map((project) => project.grade);
-  // const sum = grade.reduce((acc, next) => acc + next, 0);
-  // console.log(sum);
-  // console.log(data.data.progress[data.data.progress.length - 1].object.name);
   const projects = data.data.progress.map((project) => {
     return showXPSum(project.object.name);
   });
@@ -136,7 +130,6 @@ export const showProgress = async () => {
   optData.append(xp, lp);
   body.append(optData);
   showProgressGraphic(data.data.progress, res, totalXP, body);
-  // console.log(Math.round(totalXP / 1000));
 };
 
 const showXPSum = async (projectName) => {

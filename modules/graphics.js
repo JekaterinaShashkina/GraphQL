@@ -1,7 +1,5 @@
 export const showAuditGraphic = (data, body) => {
   const { auditRatio, attrs, totalUp, totalDown } = data;
-  console.log(data);
-  console.log(auditRatio, attrs, totalUp, totalDown);
   const chart = document.createElement('div');
   const audit = document.createElement('h2');
   audit.classList.add('audit__title');
@@ -50,7 +48,6 @@ export const showAuditGraphic = (data, body) => {
 
 export const showProgressGraphic = (data, result, total, body) => {
   const container = document.querySelector('.container');
-  console.log(container.offsetWidth);
   const windowWidth = container.offsetWidth;
 
   const xpGraph = document.createElement('div');
@@ -87,7 +84,6 @@ export const showProgressGraphic = (data, result, total, body) => {
         month: 'numeric',
       },
     );
-    // const nameProject = element.object.name;
     let xAxis = `
     <text 
     x="${70 + i * ((windowWidth * 0.9) / data.length)}" 

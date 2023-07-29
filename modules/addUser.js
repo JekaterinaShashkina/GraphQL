@@ -1,12 +1,10 @@
 export const addUser = (data, body) => {
   const { firstName, lastName, login, attrs, createdAt } = data;
-  console.log(firstName, lastName, login, attrs.image, createdAt);
   const date = new Date(Date.parse(createdAt)).toLocaleString('us-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
-  console.log(date);
   const user = document.createElement('div');
   user.classList.add('user');
   const name = document.createElement('h2');
@@ -33,7 +31,6 @@ export const addUser = (data, body) => {
   logoutBtn.textContent = 'Log out';
   logoutBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    console.log(e);
     localStorage.removeItem('JWT token');
     location.reload();
   });
